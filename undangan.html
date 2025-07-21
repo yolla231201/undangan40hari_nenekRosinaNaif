@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <!-- META OG Tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- OG Meta -->
   <meta property="og:title" content="Undangan 40 Hari Rosina Naif" />
-  <meta property="og:description" content="Kepada Yth. Bapak/Ibu/Saudara/i, kami mengundang Anda dalam acara 40 hari Mama/Nenek tercinta Rosina Naif." />
-  <meta property="og:image" content="https://40hari-nenek-rosina-naif.vercel.app/assets/images/icon.png" />
+  <meta property="og:description" content="Kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara 40 Hari Almarhumah Rosina Naif." />
+  <meta property="og:image" content="https://40hari-nenek-rosina-naif.vercel.app/assets/images/icon.jpg" />
   <meta property="og:url" content="https://40hari-nenek-rosina-naif.vercel.app/undangan.html" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter Card Preview -->
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Undangan 40 Hari Rosina Naif" />
   <meta name="twitter:description" content="Kehadiran dan doa Anda sangat berarti bagi keluarga besar kami." />
-  <meta name="twitter:image" content="https://40hari-nenek-rosina-naif.vercel.app/assets/images/icon.png" />
+  <meta name="twitter:image" content="https://40hari-nenek-rosina-naif.vercel.app/assets/images/icon.jpg" />
 
-  <!-- Favicon fallback -->
-  <link rel="icon" href="data:,">
+  <!-- Favicon -->
+  <link rel="icon" href="data:," />
 
-  <title>Undangan 40 Hari - Mama/Nenek Tercinta Rosina Naif</title>
+  <title>Undangan 40 Hari - Rosina Naif</title>
 
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -32,7 +35,7 @@
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
       overflow-x: hidden;
-      background-color: #000;
+      background: #000;
     }
 
     .container {
@@ -110,7 +113,6 @@
       opacity: 0.8;
     }
 
-    /* Tombol pembuka */
     .opening-overlay {
       position: fixed;
       z-index: 1000;
@@ -218,7 +220,6 @@
   </style>
 </head>
 <body>
-  <!-- Pembuka -->
   <div class="opening-overlay" id="openOverlay">
     <h2>Undangan Peringatan 40 Hari</h2>
     <p>Untuk Almarhumah Rosina Naif</p>
@@ -234,17 +235,16 @@
       <div class="footer">Mohon maaf apabila ada kesalahan dalam penulisan nama dan gelar</div>
     </div>
 
-    <button class="audio-btn spin" id="audioBtn" onclick="toggleAudio()">
-      <span class="material-icons" id="iconAudio">stop</span>
+    <button class="audio-btn" id="audioBtn" onclick="toggleAudio()">
+      <span class="material-icons" id="iconAudio">pause</span>
     </button>
 
-    <audio id="bgMusic" loop muted>
+    <audio id="bgMusic" loop>
       <source src="assets/lagu.mp3" type="audio/mpeg" />
       Browser Anda tidak mendukung audio.
     </audio>
   </div>
 
-  <!-- Salju -->
   <div id="salju-container"></div>
 
   <script>
@@ -266,13 +266,11 @@
         document.getElementById("namaTamu").textContent = nama;
       }
 
-      audio.muted = false;
       audio.play().then(() => {
-        iconAudio.textContent = "stop";
+        iconAudio.textContent = "pause";
         audioBtn.classList.add("spin");
       }).catch(() => {
-        iconAudio.textContent = "play_arrow";
-        audioBtn.classList.remove("spin");
+        console.log("Audio belum bisa diputar otomatis.");
       });
 
       startSnow();
@@ -281,7 +279,7 @@
     function toggleAudio() {
       if (audio.paused) {
         audio.play();
-        iconAudio.textContent = "stop";
+        iconAudio.textContent = "pause";
         audioBtn.classList.add("spin");
       } else {
         audio.pause();
@@ -317,11 +315,11 @@
         const img = document.createElement("img");
         img.src = snowImages[Math.floor(Math.random() * snowImages.length)];
         snow.style.left = Math.random() * 100 + "vw";
-        img.style.width = (Math.random() * 12 + 12) + "px";
+        img.style.width = (Math.random() * 20 + 10) + "px";
         snow.appendChild(img);
         container.appendChild(snow);
 
-        let duration = Math.random() * 5 + 5;
+        const duration = Math.random() * 6 + 5;
         snow.animate([
           { transform: "translateY(0)", opacity: 1 },
           { transform: "translateY(100vh)", opacity: 0.2 }
@@ -331,7 +329,7 @@
         });
 
         setTimeout(() => snow.remove(), duration * 1000);
-      }, 300);
+      }, 400);
     }
   </script>
 </body>
