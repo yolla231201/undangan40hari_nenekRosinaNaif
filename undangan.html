@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Undangan 40 Hari</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
   <style>
     * {
       box-sizing: border-box;
@@ -17,13 +16,14 @@
       width: 100%;
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .container {
       position: relative;
       width: 100%;
       height: 100vh;
+      overflow: hidden;
     }
 
     .background {
@@ -54,7 +54,6 @@
       margin: 6px 0;
     }
 
-    /* TOMBOL AUDIO */
     .audio-btn {
       position: fixed;
       bottom: 20px;
@@ -82,24 +81,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* SALJU */
-    .snowflake {
-      position: absolute;
-      top: -30px;
-      animation-name: fall;
-      animation-timing-function: linear;
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-        opacity: 0;
-      }
-    }
-
-    /* DESKTOP */
     @media (min-width: 769px) {
       .background {
         content: url('assets/images/Artboard 5xxhdpi.png');
@@ -134,7 +115,6 @@
       }
     }
 
-    /* MOBILE */
     @media (max-width: 768px) {
       .background {
         content: url('assets/images/Artboard 6xxhdpi.png');
@@ -177,38 +157,57 @@
   </style>
 </head>
 <body>
-  <div class="container" id="undanganSection">
+  <div class="container">
     <img src="assets/images/Artboard 5xxhdpi.png" alt="Undangan" class="background" />
-    <div class="guest-box">
+    <div class="guest-box" id="guestBox">
       <div class="label">Kepada Yth. Bapak/Ibu/Saudara/i</div>
-      <div class="name" id="namaTamu">Tamu</div>
+      <div class="name" id="namaTamu">Tamu Undangan</div>
       <hr />
       <div class="footer">Mohon maaf apabila ada kesalahan dalam penulisan nama dan gelar</div>
     </div>
 
-    <!-- TOMBOL AUDIO -->
     <button class="audio-btn spin" id="audioBtn" onclick="toggleAudio()">
       <span class="material-icons" id="iconAudio">stop</span>
     </button>
 
-    <!-- AUDIO -->
-    <audio id="bgMusic" autoplay loop>
+    <audio id="bgMusic" loop autoplay muted>
       <source src="assets/lagu.mp3" type="audio/mpeg" />
       Browser Anda tidak mendukung audio.
     </audio>
   </div>
 
   <script>
-    const namaTamu = document.getElementById('namaTamu');
     const audio = document.getElementById('bgMusic');
     const iconAudio = document.getElementById('iconAudio');
     const audioBtn = document.getElementById('audioBtn');
 
-    // Ambil nama dari nama file
-    const path = window.location.pathname;
-    const fileName = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
-    const nama = decodeURIComponent(fileName.replace(/[-_]/g, ' '));
-    namaTamu.textContent = nama;
+    // Ambil parameter dari URL
+    function getNamaDariURL() {
+      const params = new URLSearchParams(window.location.search);
+      const nama = params.get("to");
+      return nama ? decodeURIComponent(nama) : null;
+    }
+
+    // Tampilkan nama tamu
+    window.onload = () => {
+      const nama = getNamaDariURL();
+      if (nama) {
+        document.getElementById("namaTamu").textContent = nama;
+      }
+
+      // Auto-play audio (jika browser mengizinkan)
+      audio.muted = false;
+      const promise = audio.play();
+      if (promise !== undefined) {
+        promise.then(_ => {
+          iconAudio.textContent = "stop";
+          audioBtn.classList.add("spin");
+        }).catch(error => {
+          iconAudio.textContent = "play_arrow";
+          audioBtn.classList.remove("spin");
+        });
+      }
+    };
 
     function toggleAudio() {
       if (audio.paused) {
@@ -221,29 +220,6 @@
         audioBtn.classList.remove("spin");
       }
     }
-
-    // Salju
-    function buatSalju() {
-      const salju = document.createElement("div");
-      salju.classList.add("snowflake");
-
-      const gambar = [
-        'assets/images/salju2.png',
-        'assets/images/salju3.png',
-        'assets/images/merpati8.png',
-      ];
-
-      const img = gambar[Math.floor(Math.random() * gambar.length)];
-      salju.innerHTML = `<img src="${img}" style="width:40px; height:40px;" />`;
-      salju.style.left = Math.random() * 100 + "vw";
-      salju.style.animationDuration = (Math.random() * 4 + 6) + "s";
-      salju.style.opacity = Math.random();
-
-      document.getElementById("undanganSection").appendChild(salju);
-      setTimeout(() => salju.remove(), 12000);
-    }
-
-    setInterval(buatSalju, 700);
   </script>
 </body>
 </html>
