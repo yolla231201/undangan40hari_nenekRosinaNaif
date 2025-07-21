@@ -180,7 +180,7 @@
     </div>
 
     <button class="audio-btn spin" id="audioBtn" onclick="toggleAudio()">
-      <span class="material-icons" id="iconAudio">stop</span>
+      <span class="material-icons" id="iconAudio">pause</span>
     </button>
 
     <audio id="bgMusic" loop autoplay muted>
@@ -213,7 +213,7 @@
       const promise = audio.play();
       if (promise !== undefined) {
         promise.then(() => {
-          iconAudio.textContent = "stop";
+          iconAudio.textContent = "pause";
           audioBtn.classList.add("spin");
         }).catch(() => {
           iconAudio.textContent = "play_arrow";
@@ -228,7 +228,7 @@
     function toggleAudio() {
       if (audio.paused) {
         audio.play();
-        iconAudio.textContent = "stop";
+        iconAudio.textContent = "pause";
         audioBtn.classList.add("spin");
       } else {
         audio.pause();
