@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Undangan 40 Hari</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .guest-box {
+      position: absolute;
+      z-index: 10;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .guest-box .label {
+      font-weight: normal;
+    }
+
+    .guest-box .name {
+      font-weight: bold;
+    }
+
+    .guest-box hr {
+      border: none;
+      border-top: 1px solid #fff;
+      margin: 6px 0;
+    }
+
+    /* TOMBOL AUDIO */
+    .audio-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .spin {
+      animation: rotate 18s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* SALJU */
+    .snowflake {
+      position: absolute;
+      top: -30px;
+      animation-name: fall;
+      animation-timing-function: linear;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    /* DESKTOP */
+    @media (min-width: 769px) {
+      .background {
+        content: url('assets/images/Artboard 5xxhdpi.png');
+      }
+
+      .guest-box {
+        bottom: 40px;
+        left: 70%;
+        transform: translateX(-50%);
+        width: 40%;
+        padding: 16px 24px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 16px;
+        color: white;
+        font-size: 16px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      }
+
+      .guest-box .name {
+        font-size: 22px;
+        color: #fff;
+      }
+
+      .guest-box .label {
+        font-size: 16px;
+      }
+
+      .guest-box .footer {
+        font-size: 14px;
+        font-style: italic;
+        opacity: 0.9;
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .background {
+        content: url('assets/images/Artboard 6xxhdpi.png');
+      }
+
+      .guest-box {
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        padding: 12px 16px;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #333;
+        border: 2px dashed #666;
+        border-radius: 12px;
+        font-size: 12px;
+      }
+
+      .guest-box .name {
+        font-size: 16px;
+        color: #222;
+      }
+
+      .guest-box .label {
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .guest-box .footer {
+        font-size: 11px;
+        font-style: italic;
+        opacity: 0.8;
+        color: #444;
+      }
+
+      .guest-box hr {
+        border-top: 1px dashed #666;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="undanganSection">
+    <img src="assets/images/Artboard 5xxhdpi.png" alt="Undangan" class="background" />
+    <div class="guest-box">
+      <div class="label">Kepada Yth. Bapak/Ibu/Saudara/i</div>
+      <div class="name" id="namaTamu">Tamu</div>
+      <hr />
+      <div class="footer">Mohon maaf apabila ada kesalahan dalam penulisan nama dan gelar</div>
+    </div>
+
+    <!-- TOMBOL AUDIO -->
+    <button class="audio-btn spin" id="audioBtn" onclick="toggleAudio()">
+      <span class="material-icons" id="iconAudio">stop</span>
+    </button>
+
+    <!-- AUDIO -->
+    <audio id="bgMusic" autoplay loop>
+      <source src="assets/lagu.mp3" type="audio/mpeg" />
+      Browser Anda tidak mendukung audio.
+    </audio>
+  </div>
+
+  <script>
+    const namaTamu = document.getElementById('namaTamu');
+    const audio = document.getElementById('bgMusic');
+    const iconAudio = document.getElementById('iconAudio');
+    const audioBtn = document.getElementById('audioBtn');
+
+    // Ambil nama dari nama file
+    const path = window.location.pathname;
+    const fileName = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+    const nama = decodeURIComponent(fileName.replace(/[-_]/g, ' '));
+    namaTamu.textContent = nama;
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+        iconAudio.textContent = "stop";
+        audioBtn.classList.add("spin");
+      } else {
+        audio.pause();
+        iconAudio.textContent = "play_arrow";
+        audioBtn.classList.remove("spin");
+      }
+    }
+
+    // Salju
+    function buatSalju() {
+      const salju = document.createElement("div");
+      salju.classList.add("snowflake");
+
+      const gambar = [
+        'assets/images/salju2.png',
+        'assets/images/salju3.png',
+        'assets/images/merpati8.png',
+      ];
+
+      const img = gambar[Math.floor(Math.random() * gambar.length)];
+      salju.innerHTML = `<img src="${img}" style="width:40px; height:40px;" />`;
+      salju.style.left = Math.random() * 100 + "vw";
+      salju.style.animationDuration = (Math.random() * 4 + 6) + "s";
+      salju.style.opacity = Math.random();
+
+      document.getElementById("undanganSection").appendChild(salju);
+      setTimeout(() => salju.remove(), 12000);
+    }
+
+    setInterval(buatSalju, 700);
+  </script>
+</body>
+</html>
