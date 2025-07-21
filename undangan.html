@@ -81,6 +81,19 @@
       100% { transform: rotate(360deg); }
     }
 
+    .snowflake, .dove {
+      position: fixed;
+      top: -50px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .snowflake img, .dove img {
+      width: 24px;
+      height: auto;
+      opacity: 0.8;
+    }
+
     @media (min-width: 769px) {
       .background {
         content: url('assets/images/Artboard 5xxhdpi.png');
@@ -176,37 +189,40 @@
     </audio>
   </div>
 
+  <!-- Snow container -->
+  <div id="salju-container"></div>
+
   <script>
     const audio = document.getElementById('bgMusic');
     const iconAudio = document.getElementById('iconAudio');
     const audioBtn = document.getElementById('audioBtn');
 
-    // Ambil parameter dari URL
     function getNamaDariURL() {
       const params = new URLSearchParams(window.location.search);
       const nama = params.get("to");
       return nama ? decodeURIComponent(nama) : null;
     }
 
-    // Tampilkan nama tamu
     window.onload = () => {
       const nama = getNamaDariURL();
       if (nama) {
         document.getElementById("namaTamu").textContent = nama;
       }
 
-      // Auto-play audio (jika browser mengizinkan)
       audio.muted = false;
       const promise = audio.play();
       if (promise !== undefined) {
-        promise.then(_ => {
+        promise.then(() => {
           iconAudio.textContent = "stop";
           audioBtn.classList.add("spin");
-        }).catch(error => {
+        }).catch(() => {
           iconAudio.textContent = "play_arrow";
           audioBtn.classList.remove("spin");
         });
       }
+
+      // Salju muncul setelah semua siap
+      startSnow();
     };
 
     function toggleAudio() {
@@ -219,6 +235,37 @@
         iconAudio.textContent = "play_arrow";
         audioBtn.classList.remove("spin");
       }
+    }
+
+    function startSnow() {
+      const container = document.getElementById("salju-container");
+      const snowImages = [
+        "assets/salju/salju1.png",
+        "assets/salju/salju2.png",
+        "assets/salju/salju3.png"
+      ];
+
+      setInterval(() => {
+        const snow = document.createElement("div");
+        snow.className = "snowflake";
+        const img = document.createElement("img");
+        img.src = snowImages[Math.floor(Math.random() * snowImages.length)];
+        snow.style.left = Math.random() * 100 + "vw";
+        img.style.width = (Math.random() * 12 + 12) + "px";
+        snow.appendChild(img);
+        container.appendChild(snow);
+
+        let duration = Math.random() * 5 + 5;
+        snow.animate([
+          { transform: "translateY(0)", opacity: 1 },
+          { transform: "translateY(100vh)", opacity: 0.2 }
+        ], {
+          duration: duration * 1000,
+          easing: "linear"
+        });
+
+        setTimeout(() => snow.remove(), duration * 1000);
+      }, 300);
     }
   </script>
 </body>
